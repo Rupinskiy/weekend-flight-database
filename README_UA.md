@@ -1,6 +1,6 @@
 # Weekend Flight Database v8.1 RC2 — публічний GitHub + Cloudflare Free
 
-Для нового репозиторію обирайте **Public**. Вхідні ключі й паролі ніколи не зберігайте в GitHub. Окремі документи: `docs/PUBLIC_CLOUDFLARE_STUDENT_UA.md` та `docs/QA_REAUDIT_2026-11-05_UA.md`. Версія не пройшла підтверджений реальний deployment у Cloudflare із вашими ключами.
+Для нового репозиторію обирайте **Public**. Детальні браузерні кроки для вашого вже опублікованого GitHub та Cloudflare — [docs/CLOUDFLARE_CLICK_BY_CLICK_UA.md](docs/CLOUDFLARE_CLICK_BY_CLICK_UA.md). Офлайн-генератор значень SESSION_SECRET та ENCRYPTION_SECRET — [tools/secret-generator.html](tools/secret-generator.html). Вхідні ключі й паролі ніколи не зберігайте в GitHub. Окремі документи: `docs/PUBLIC_CLOUDFLARE_STUDENT_UA.md` та `docs/QA_REAUDIT_2026-11-05_UA.md`. Версія не пройшла підтверджений реальний deployment у Cloudflare із вашими ключами.
 
 # Weekend Flight Database v8.0 RC1 — GitHub-first
 
@@ -66,4 +66,4 @@
 - Cloudflare Access додатково рекомендований для членів сім'ї.
 - Не розміщуйте робочу базу, API-ключі чи `.env` у репозиторії. `.gitignore` захищає основні форми таких файлів.
 
-**Далі:** прочитайте `docs/DEPLOY_UA.md`, створіть окремий приватний репозиторій у GitHub Desktop, D1 у Cloudflare і зв'яжіть репозиторій через Cloudflare Workers Builds.
+**Далі:** прочитайте `docs/DEPLOY_UA.md`, використайте вже створений публічний репозиторій Rupinskiy/weekend-flight-database, D1 у Cloudflare і зв'яжіть репозиторій через Cloudflare Workers Builds.
