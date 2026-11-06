@@ -201,9 +201,12 @@ async function priceSearch(env,query){const origin=String(query.origin||'').toUp
 async function verifyFlight(env,input){const flight_no=String(input.flight_no||'').trim().toUpperCase(),date=input.date;
  if(!/^[A-Z0-9]{2,4}\d{1,5}[A-Z]?$/.test(flight_no)||!iso(date))throw Error('Flight number and ISO date required');const p=await chooseProfile(env,'aerodatabox',input.profile_id,2);
  // AeroDataBox: direct, RapidAPI and API.Market may use different host/header; selectable profile metadata.
- const host=p.plan.includes('rapidapi')?'aerodatabox.p.rapidapi.com':p.plan.includes('apimarket')?'api.market.aerodatabox.com':'api.aerodatabox.com';
- const url=`https://${host}/flights/number/${encodeURIComponent(flight_no)}/${date}`;
- const headers=p.plan.includes('rapidapi')?{'X-RapidAPI-Key':p.secret,'X-RapidAPI-Host':host}:p.plan.includes('apimarket')?{'x-api-key':p.secret}:{'x-api-key':p.secret};
+ const channel=String(p.plan||'').toLowerCase();
+ const viaRapid=channel.includes('rapidapi');
+ const viaMarket=channel.includes('apimarket')||channel.includes('api.market')||channel.includes('api market');
+ const host=viaRapid?'https://aerodatabox.p.rapidapi.com':viaMarket?'https://prod.api.market/api/v1/aedbx/aerodatabox':'https://api.aerodatabox.com';
+ const url=`${host}/flights/number/${encodeURIComponent(flight_no)}/${date}`;
+ const headers=viaRapid?{'X-RapidAPI-Key':p.secret,'X-RapidAPI-Host':'aerodatabox.p.rapidapi.com'}:viaMarket?{'x-api-market-key':p.secret}:{'x-api-key':p.secret};
  const r=await fetch(url,{headers});await incrementUsage(env,p,2);if(!r.ok)throw Error('AeroDataBox HTTP '+r.status);const raw=await r.json();
  // Do not call unknown/empty/provider-partial responses verified.
  const matches=(Array.isArray(raw)?raw:[]).filter(x=>String(x.number||x.flightNumber||'').replace(/\s/g,'').toUpperCase()===flight_no || String(x.number||'').replace(/\s/g,'').toUpperCase()===flight_no);
