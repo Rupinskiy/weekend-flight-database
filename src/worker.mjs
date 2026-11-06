@@ -153,9 +153,9 @@ async function oagTick(env,profileId){
  if(!j)return {message:'No pending OAG jobs'};
  if(j.status==='COMMITTING')return finalizeOAG(env,j);
  const p=await chooseProfile(env,'oag',profileId);
- const url=new URL(j.next_url||'https://api.oag.com/schedules');
- if(url.protocol!=='https:'||url.hostname!=='api.oag.com'||!url.pathname.startsWith('/schedules'))throw Error('Invalid OAG pagination target');
- if(!j.next_url){url.searchParams.set(j.direction==='OUT'?'DepartureAirport':'ArrivalAirport',j.airport);url.searchParams.set('DepartureDate',j.date_from+'/'+j.date_to);url.searchParams.set('CodeType','IATA');url.searchParams.set('Limit','100');url.searchParams.set('version','v1');}
+ const url=new URL(j.next_url||'https://api.oag.com/flights');
+ if(url.protocol!=='https:'||url.hostname!=='api.oag.com'||!/^\/flights\/?$/.test(url.pathname))throw Error('Invalid OAG pagination target');
+ if(!j.next_url){url.searchParams.set(j.direction==='OUT'?'DepartureAirport':'ArrivalAirport',j.airport);url.searchParams.set('DepartureDate',j.date_from);url.searchParams.set('ToDate',j.date_to);url.searchParams.set('CodeType','IATA');url.searchParams.set('Limit','100');url.searchParams.set('version','v1');}
  const response=await fetch(url,{headers:{'Subscription-Key':p.secret,Accept:'application/json'}});await incrementUsage(env,p);
  if(!response.ok){await sql(env,"UPDATE oag_jobs SET status='ERROR',last_error=?,updated_at=? WHERE id=?",'HTTP '+response.status,now(),j.id).run();throw Error('OAG HTTP '+response.status+' — verify subscription entitlement');}
  const data=await response.json();const rows=Array.isArray(data)?data:(data.data||data.response||data.schedules||data.items||[]);
@@ -166,7 +166,7 @@ async function oagTick(env,profileId){
   const placeholders=chunk.map(([h,r])=>{args.push(j.id,h,r);return '(?,?,?)'}).join(',');
   await sql(env,'INSERT OR IGNORE INTO oag_staging(job_id,record_hash,rule_json) VALUES '+placeholders,...args).run();}
  const next=data.paging?.next||data.pagination?.next||null;
- if(next){const u=new URL(next,url);if(u.protocol!=='https:'||u.hostname!=='api.oag.com'||!u.pathname.startsWith('/schedules'))throw Error('Unsafe provider next link');}
+ if(next){const u=new URL(next,url);if(u.protocol!=='https:'||u.hostname!=='api.oag.com'||!/^\/flights\/?$/.test(u.pathname))throw Error('Unsafe provider next link');}
  const status=next?'RUNNING':'COMMITTING';
  const errors=[j.last_error,bad.slice(0,3).map(x=>x.reason).join(';')].filter(Boolean).join(';').slice(0,250);
  await sql(env,'UPDATE oag_jobs SET next_url=?,status=?,last_error=?,updated_at=? WHERE id=?',next,status,errors,now(),j.id).run();
