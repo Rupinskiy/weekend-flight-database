@@ -1,0 +1,20 @@
+name: CI - regression and integrity
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run check
+      - run: npm test
+      - name: Secret detection - basic patterns
+        run: |
+          if grep -R -n -E '(AIRLABS_API_KEY|SERPAPI_KEY|OAG_SUBSCRIPTION_KEY)=[A-Za-z0-9_-]{10,}' --include='*.js' --include='*.mjs' --include='*.json' .; then exit 1; fi

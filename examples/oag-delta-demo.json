@@ -1,0 +1,10 @@
+[
+  {
+    "documentType": "ScheduleInstance",
+    "carrier": "ZZ",
+    "flightNumber": 100,
+    "state": "CANCELLED",
+    "departure": {"airport": {"iata": "STN"}, "date": {"local": "2026-11-06"}, "time": {"local": "20:30"}},
+    "arrival": {"airport": {"iata": "FCO"}}
+  }
+]

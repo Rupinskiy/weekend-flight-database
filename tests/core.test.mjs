@@ -1,0 +1,18 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {normalizeAirLabs,normalizeOAG,normalizeOAGDelta,weekdays,time,operates,candidates,pairWeekend,londonReturnAllowed,matchesInbound,matchesOutbound,normalizeSerpApi,extractICS} from '../src/core.mjs';
+const air={dep_iata:'STN',arr_iata:'FCO',airline_iata:'FR',flight_iata:'FR100',dep_time:'2015',arr_time:'2355',days:'5,6'};
+const oag={carrier:'FR',flightNumber:'100',departure:{airport:'STN',passengerLocalTime:'2015'},arrival:{airport:'FCO',passengerLocalTime:'2355'},legDaysOfOperation:'0000100',startDate:'2026-11-01',endDate:'2027-03-31'};
+test('AirLabs recurring days and unknown seasons',()=>{const r=normalizeAirLabs(air);assert.deepEqual(r.days,[5,6]);assert.equal(r.validity,'UNKNOWN_SEASON');assert.equal(r.dep_time,'20:15')});
+test('OAG effective period correct',()=>{const r=normalizeOAG(oag);assert.equal(r.validity,'DATE_RANGE');assert.equal(operates(r,'2026-11-06'),true);assert.equal(operates(r,'2026-11-07'),false)});
+test('OAG weekdays formats',()=>{assert.deepEqual(weekdays('12357'),[1,2,3,5,7]);assert.deepEqual(weekdays('0000100'),[5]);assert.deepEqual(weekdays([5,5,7]),[5,7])});
+test('Two continuous windows across midnight',()=>{assert.equal(matchesOutbound(5,'18:00'),true);assert.equal(matchesOutbound(6,'10:00'),true);assert.equal(matchesOutbound(6,'11:00'),false);assert.equal(matchesInbound(7,'20:00'),true);assert.equal(matchesInbound(1,'05:59'),true);assert.equal(matchesInbound(1,'06:01'),false)});
+test('Regional UK return same, London flexible',()=>{assert.equal(londonReturnAllowed('STN','LGW'),true);assert.equal(londonReturnAllowed('BRS','LGW'),false);assert.equal(londonReturnAllowed('BRS','BRS'),true)});
+test('Dated OAG event is exception, never weekly rule',()=>{const d=normalizeOAGDelta({flightNumber:3412,carrier:'FR',state:'CANCELLED',departure:{airport:{iata:'STN'},date:'2026-11-06',passengerLocalTime:'20:15'},arrival:{airport:{iata:'FCO'}}});assert.equal(d.kind,'INSTANCE');assert.equal(d.flight_no,'FR3412')});
+test('OAG effective delta changes rule',()=>{const d=normalizeOAGDelta({...oag,state:'CANCELLED'});assert.equal(d.kind,'RULE');assert.equal(d.action,'CANCELLED')});
+test('Invalid OAG incomplete season rejected',()=>assert.throws(()=>normalizeOAG({...oag,endDate:undefined})));
+test('No filtering during collection; only candidates filter',()=>{const night=normalizeAirLabs({...air,dep_time:'1200'});assert.equal(candidates([night],'2026-11-06',2,'weekend').length,0);assert.ok(candidates([night],'2026-11-06',2,'all').length>0)});
+test('One way pairs from stored weekly rules',()=>{const o=normalizeAirLabs(air);const b=normalizeAirLabs({...air,dep_iata:'FCO',arr_iata:'LGW',dep_time:'2100',days:'7',flight_iata:'FR200'});const cs=candidates([o,b],'2026-11-06',4);assert.ok(pairWeekend(cs).length>0)});
+test('Price normalization',()=>{const o=normalizeSerpApi({best_flights:[{price:44,flights:[{flight_number:'FR12',departure_airport:{id:'STN'},arrival_airport:{id:'FCO'}}]}],other_flights:[],search_parameters:{currency:'GBP'}});assert.equal(o[0].price,44)});
+test('ICS simple date event',()=>{const x=extractICS('BEGIN:VCALENDAR\nBEGIN:VEVENT\nSUMMARY:Exam\nDTSTART;VALUE=DATE:20270612\nEND:VEVENT\nEND:VCALENDAR');assert.equal(x[0].date,'2027-06-12')});
+test('Bad API rows rejected',()=>{assert.throws(()=>normalizeAirLabs({}));assert.throws(()=>normalizeOAGDelta({}))});
+test('Time parsing local HHmm',()=>{assert.equal(time('2359'),'23:59');assert.equal(time('2420'),null)});

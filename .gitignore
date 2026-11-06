@@ -1,0 +1,13 @@
+node_modules/
+.dev.vars
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.db
+.wrangler/
+dist/
+coverage/
+*.log
+.DS_Store

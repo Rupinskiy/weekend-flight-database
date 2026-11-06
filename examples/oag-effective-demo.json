@@ -1,0 +1,12 @@
+[
+  {
+    "carrier": "ZZ",
+    "flightNumber": 100,
+    "departure": {"airport": "STN", "passengerLocalTime": "2030"},
+    "arrival": {"airport": "FCO", "passengerLocalTime": "2355"},
+    "legDaysOfOperation": "0000100",
+    "startDate": "2026-11-01",
+    "endDate": "2027-03-31",
+    "serviceType": "J"
+  }
+]

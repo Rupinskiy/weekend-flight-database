@@ -1,0 +1,115 @@
+{
+  "product": "Weekend Flight Database",
+  "version": "8.0.0-rc1",
+  "files_count": 27,
+  "items": {
+    ".env.example": {
+      "size": 369,
+      "sha256": "dbc429c5e29c992bc10db1b1c617a4506f6c0d8347af391bbda750b58705f9fc"
+    },
+    ".github/CODEOWNERS": {
+      "size": 13,
+      "sha256": "e078a4bd16b852e4431a10236b957fff30c16a1bf292c61603ae6e88a32c3763"
+    },
+    ".github/pull_request_template.md": {
+      "size": 604,
+      "sha256": "b92c7b6f54f4ace9f91ae564610a275ee12ddaa20a3cafb3d508b72e99eea831"
+    },
+    ".github/workflows/ci.yml": {
+      "size": 564,
+      "sha256": "eac4af71e0498569fc71b345c39dbb5ae4018e20ef8f4d08b721f485425bdde0"
+    },
+    ".gitignore": {
+      "size": 117,
+      "sha256": "77a1a32fe7f1b1284826f7634c4ddf2699d4d364376346d277c67e230f79c107"
+    },
+    "CHANGELOG.md": {
+      "size": 1226,
+      "sha256": "9b50b4d50dbdf0a9320904987a190203cfab74aaf298097584dd3a4a545e6a2a"
+    },
+    "QA_RESULTS.txt": {
+      "size": 315,
+      "sha256": "30ad8c65c028e72e5c6ff0fc6712d8da963a8cae772079c27109466b96211577"
+    },
+    "README.md": {
+      "size": 1334,
+      "sha256": "5af974de244ef7d68edd75b6a680565f322c12ef3ccc6ce91eb09685c53dd0af"
+    },
+    "README_UA.md": {
+      "size": 8232,
+      "sha256": "6bd5a41b025d33dcc8a62bba7f5139f488db071ab4fd9e578440d11cea06a613"
+    },
+    "SECURITY.md": {
+      "size": 735,
+      "sha256": "ff00e0e4c2e2cc0a44a80c76e05c43a6fd77cf6b9a4f665bb33b3846a08812ae"
+    },
+    "docs/API_ACCESS_UA.md": {
+      "size": 6800,
+      "sha256": "5419a6445e5e74e864615f441322fb65d32de4b07f32fd8d91e864a11f9b1b5c"
+    },
+    "docs/DEPLOY_UA.md": {
+      "size": 18178,
+      "sha256": "f28be61fff19782f0ffddd7323b940172a9966ae2ff5813dbb71ccff68514637"
+    },
+    "docs/MIGRATION_V7_UA.md": {
+      "size": 1718,
+      "sha256": "5b5b8b5db75d84545bdbac6a1baf436ac94006c9a24da6e8b3ed7335aea1be80"
+    },
+    "docs/OAG_HTTP_PUSH_UA.md": {
+      "size": 3728,
+      "sha256": "7b9cea98353954312ecd8b130ae753d365a4f9b4d225366d7d6c907a9e92ed89"
+    },
+    "docs/QA_AUDIT_UA.md": {
+      "size": 9004,
+      "sha256": "b57484ac471fb7de40456b99db689a30d8ced12f4811250c457629f805e09fc7"
+    },
+    "docs/ROADMAP_UA.md": {
+      "size": 2390,
+      "sha256": "fdaea5ba9abde04a1010e5b0f70e582f8569665134c91329fd2de93c91706fa2"
+    },
+    "examples/oag-delta-demo.json": {
+      "size": 276,
+      "sha256": "d8cef4be0cbe5469f5b406798acdbd9af22b6c09c9d39a0500c61d6cd3a29cde"
+    },
+    "examples/oag-effective-demo.json": {
+      "size": 310,
+      "sha256": "7506755678241477708e24f666b861ca2126aaaf4743cd67582be60033afb65b"
+    },
+    "package.json": {
+      "size": 447,
+      "sha256": "d528ccf9dd3beeab9354912e319e4240dedfabb956a4f44ef111dddf2d1609ec"
+    },
+    "public/app.js": {
+      "size": 31641,
+      "sha256": "fa2fb1b13270c1977ed4d1b4c0ef52190bec66fef7c7e56770f08dabaca142ff"
+    },
+    "public/index.html": {
+      "size": 2083,
+      "sha256": "ccfc44d3e408a2e2cc5305a4f6194dd131f7c90ad7943e5d46401ac954fbfeef"
+    },
+    "public/style.css": {
+      "size": 6188,
+      "sha256": "5989c098921d42993cd73d92edceef2e178e1c0462e44e9cd8e8bfd8d067a7fc"
+    },
+    "src/core.mjs": {
+      "size": 9496,
+      "sha256": "2e64dc80012bce7f773ba2160e8251615829780021ecd9add6b39fe83e5392fe"
+    },
+    "src/worker.mjs": {
+      "size": 34944,
+      "sha256": "e54b7cb310922617df1dd81a1ef798b2638b035316aaef2a37d71ac7f1c09dd3"
+    },
+    "tests/api.test.mjs": {
+      "size": 9799,
+      "sha256": "7f2d2510542a722809ef42edbff30c00e13ad84f904d2298e7a7010ac4e076fa"
+    },
+    "tests/core.test.mjs": {
+      "size": 3519,
+      "sha256": "dfcb9d6503ae0cd7fb1d49afc4129b85d626c2f6305fede151ce7fd0e63e577b"
+    },
+    "wrangler.jsonc": {
+      "size": 520,
+      "sha256": "3913ec0fabd5d3f1e24e43aebf9ef95e0b968e8ffb6c1e39d36dea1be86cc2a4"
+    }
+  }
+}

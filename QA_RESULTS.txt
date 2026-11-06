@@ -1,0 +1,1 @@
+8.1.0 RC2: npm run check PASSED; npm test 32 PASSED, 0 FAILED; local Node 22 / sqlite model. Cloudflare Free deployment NOT tested. Vendor API access NOT verified. See docs/QA_REAUDIT_2026-11-05_UA.md.
