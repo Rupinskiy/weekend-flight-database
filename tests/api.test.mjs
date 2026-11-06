@@ -80,3 +80,26 @@ test('Large signed-style delta import queued and drained without losing history'
  for(let i=0;i<5;i++)await worker.scheduled({},e,{});
  const summary=(await fetchJson(e,req('/summary','GET',null,cookie)))[1];assert.equal(summary.exceptions,20);
 });
+
+test('AeroDataBox API.Market uses the published gateway and key header',async()=>{
+ const e=envFactory(),cookie=await login(e);
+ const profile=(await fetchJson(e,req('/profiles','POST',{
+  provider:'aerodatabox',owner:'QA',plan:'API.Market Basic',quota:20,key:'test-market-key',consent:true
+ },cookie)))[1];
+ let captured=null;
+ const saved=globalThis.fetch;
+ globalThis.fetch=async (url,options)=>{
+  captured={url:String(url),headers:options.headers};
+  return new Response('[]',{status:200,headers:{'content-type':'application/json'}});
+ };
+ try{
+  const [status,result]=await fetchJson(e,req('/verify','POST',{
+   flight_no:'FR1234',date:'2026-11-13',profile_id:profile.id
+  },cookie));
+  assert.equal(status,200);
+  assert.equal(result.verified,false);
+  assert.equal(captured.url,'https://prod.api.market/api/v1/aedbx/aerodatabox/flights/number/FR1234/2026-11-13');
+  assert.equal(captured.headers['x-api-market-key'],'test-market-key');
+  assert.equal(captured.headers['x-api-key'],undefined);
+ }finally{globalThis.fetch=saved;}
+});
