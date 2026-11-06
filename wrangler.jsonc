@@ -9,7 +9,7 @@
     "run_worker_first": ["/api/*", "/webhooks/*"]
   },
   "d1_databases": [
-    {"binding": "DB", "database_name": "weekend-flight-database", "database_id": "REPLACE_WITH_YOUR_CLOUDFLARE_D1_DATABASE_ID"}
+    {"binding": "DB", "database_name": "weekend-flight-database", "database_id": "d7e6287b-9bea-4e38-ae2f-2e5b3a8f7242"}
   ],
   "triggers": {"crons": ["*/15 * * * *"]},
   "observability": {"enabled": true}
